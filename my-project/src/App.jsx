@@ -13,10 +13,10 @@ const App = () => {
     const newTodos = todos.filter((_, i) => i !== index);
     setTodos(newTodos);
   };
-  const toggleTodos = (index) => {
+  const toggleTodo = (index) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo, i) =>
-        i === index ? { ...todo, clmpleted: !todo.completed } : todo
+        i === index ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
@@ -24,7 +24,7 @@ const App = () => {
   return (
     <div>
       <NavBar />
-      <Board addTodo={addTodo} todos={todos} removeTodo={removeTodo} toggleTodos={toggleTodos} />
+      <Board addTodo={addTodo} todos={todos} removeTodo={removeTodo} toggleTodo={toggleTodo} />
     </div>
   );
 };

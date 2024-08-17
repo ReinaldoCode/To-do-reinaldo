@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const Board = ({ addTodo, todos, removeTodo,toggleTodo }) => {
+export const Board = ({ addTodo, todos, toggleTodo, removeTodo }) => {
   const [input, setInput] = useState("");
 
   const handleSubmit = (e) => {
@@ -28,7 +28,7 @@ export const Board = ({ addTodo, todos, removeTodo,toggleTodo }) => {
           <div className="pt-5 flex justify-center">
             <button
               type="submit"
-              className="transition ease-in-out delay-150 bg-blue-400 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-400 duration-300 rounded-md w-20"
+              className="transition ease-in-out delay-100 bg-blue-400 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-400 duration-300 rounded-md w-20"
               id="AddButton"
             >
               Add
@@ -36,27 +36,32 @@ export const Board = ({ addTodo, todos, removeTodo,toggleTodo }) => {
           </div>
         </form>
 
-        <div className="pt-5 flex justify-center">
+        <div className="pt-5 flex">
           <ul className="w-full">
             {todos.map((todo, index) => (
               <li
                 key={index}
-                className="flex justify-between items-center p-2 mb-2 bg-blue-400 rounded-md"
+                className={`flex justify-between items-center p-2 mb-2 rounded-md ${
+                  todo.completed ? "bg-green-500" : "bg-blue-400 flex-wrap" 
+                }`}
               >
-                <span className="text-white">{todo.text}</span>
-                <button
-                  onClick={() => removeTodo(index)}
-                  className="bg-amber-500 text-white p-1 rounded-md hover:bg-amber-600"
+                <span  className=" text-white">{todo.text}</span>
+                <div className="flex justify-between"> 
+                  <button
+                  onClick={() => toggleTodo(index)}
+                  className="mx-2 bg-amber-500 text-white p-1 rounded-md hover:bg-amber-600"
                 >
-                  Pending
+                  {todo.completed ? "Completed" : "Pending"}
                 </button>
                 <button
                   onClick={() => removeTodo(index)}
-                  className="bg-red-500 text-white p-1 rounded-md hover:bg-red-600"
+                  className="mx-2 bg-red-500 text-white p-1 rounded-md hover:bg-red-600"
                 >
                   Delete
                 </button>
+                </div> 
               </li>
+              
             ))}
           </ul>
         </div>
