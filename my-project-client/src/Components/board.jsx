@@ -1,7 +1,25 @@
 import React, { useState } from "react";
+import { Todolist } from "./todo-list";
 
-export const Board = ({ addTodo, todos, toggleTodo, removeTodo }) => {
+export const Board = () => {
   const [input, setInput] = useState("");
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = (todo) => {
+    setTodos([todo, ...todos]);
+  };
+
+  const removeTodo = (index) => {
+    const newTodos = todos.filter((_, i) => i !== index);
+    setTodos(newTodos);
+  };
+  const toggleTodo = (index) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo, i) =>
+        i === index ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,34 +55,17 @@ export const Board = ({ addTodo, todos, toggleTodo, removeTodo }) => {
         </form>
 
         <div className="pt-5 flex">
-          <ul className="w-full">
-            {todos.map((todo, index) => (
-              <li
-                key={index}
-                className={`flex justify-between items-center p-2 mb-2 rounded-md ${
-                  todo.completed ? "bg-green-500" : "bg-blue-400 flex-wrap" 
-                }`}
-              >
-                <span  className=" text-black">{todo.text}</span>
-                <div className="flex justify-between"> 
-                  <button
-                  onClick={() => toggleTodo(index)}
-                  className={`${todo.completed ? "bg-green-800 hover:bg-green-900" : "mx-2 bg-amber-500 hover:bg-amber-600" } text-black p-1 rounded-md`}
-                >
-                  {todo.completed ? "Done" : "Pending"}
-                </button>
-                <button
-                  onClick={() => removeTodo(index)}
-                  className="mx-2 bg-red-500 text-black p-1 rounded-md hover:bg-red-600"
-                >
-                  Delete
-                </button>
-                </div> 
-              </li>
-              
-            ))}
-          </ul>
-        </div>
+        <ul className="w-full">
+        {todos.map((todo, index) => 
+        <Todolist key={index}
+        index={index}
+        todo={todo}
+        toggleTodo={toggleTodo}
+        removeTodo={removeTodo}/>
+        )}
+ 
+         </ul>
+          </div>
       </div>
     </div>
   );
