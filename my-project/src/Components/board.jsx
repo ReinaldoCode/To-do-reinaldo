@@ -12,12 +12,12 @@ export const Board = ({ addTodo, todos, toggleTodo, removeTodo }) => {
   };
 
   return (
-    <div className="flex pt-2 rounded-md h-screen justify-center">
+    <div className="flex pt-2 rounded-md h-full justify-center">
       <div className="w-5/6 rounded-md justify-center bg-gray-700 p-5">
         <form onSubmit={handleSubmit}>
           <div className="flex justify-center">
             <input
-              className="border-4 border-blue-400 bg-white text-center w-96 h-14 rounded-md"
+              className=" inline-block border-4 border-blue-400 bg-white text-center w-full h-14 rounded-md"
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -45,17 +45,17 @@ export const Board = ({ addTodo, todos, toggleTodo, removeTodo }) => {
                   todo.completed ? "bg-green-500" : "bg-blue-400 flex-wrap" 
                 }`}
               >
-                <span  className=" text-white">{todo.text}</span>
+                <span  className=" text-black">{todo.text}</span>
                 <div className="flex justify-between"> 
                   <button
                   onClick={() => toggleTodo(index)}
-                  className="mx-2 bg-amber-500 text-white p-1 rounded-md hover:bg-amber-600"
+                  className={`${todo.completed ? "bg-green-800 hover:bg-green-900" : "mx-2 bg-amber-500 hover:bg-amber-600" } text-black p-1 rounded-md`}
                 >
-                  {todo.completed ? "Completed" : "Pending"}
+                  {todo.completed ? "Done" : "Pending"}
                 </button>
                 <button
                   onClick={() => removeTodo(index)}
-                  className="mx-2 bg-red-500 text-white p-1 rounded-md hover:bg-red-600"
+                  className="mx-2 bg-red-500 text-black p-1 rounded-md hover:bg-red-600"
                 >
                   Delete
                 </button>
