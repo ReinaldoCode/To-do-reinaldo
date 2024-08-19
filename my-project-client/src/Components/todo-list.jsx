@@ -5,9 +5,7 @@ const doToggle = () =>{
 const doRemove = () =>{
     removeTodo(index);
 }
-
-return(
-            
+return(      
               <li
                 key={index}
                 className={`flex justify-between items-center p-2 mb-2 rounded-md ${
@@ -33,8 +31,6 @@ return(
                     Delete
                   </button>
                 </div>
-              </li>
-           
-          
+              </li>  
 )
 }

@@ -28,7 +28,7 @@ export const Board = () => {
       setInput("");
     }
   };
-
+  
   return (
     <div className="flex pt-2 rounded-md h-full justify-center">
       <div className="w-5/6 rounded-md justify-center bg-gray-700 p-5">
