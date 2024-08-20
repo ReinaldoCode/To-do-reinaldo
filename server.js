@@ -1,8 +1,12 @@
 import express from "express";
 import router from "./routers/taskRouters.js";
+import * as dotenv from 'dotenv';
+import mongoose from "mongoose";
+
+dotenv.config();
 
 const server = express();
-const port = 3000;
+const port = process.env.PORT;
 
 server.use(express.json());
 server.use("/api/v1/task",router);
@@ -59,6 +63,13 @@ server.get("/", (req, res) => {
 server.use('*',(req, res)=>{
   res.status(404).json({msg: 'The route is not define '})
 })
+try{
+await mongoose.connect(process.env.MONGO_URL);
 server.listen(port, (req, res) => {
   console.log(`Server runing on port ${port}`);
 });
+}catch(error){
+console.log(error);
+process.exit(1);
+}
+
