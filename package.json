@@ -5,8 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-   
-    "setup-project":"npm i & cd my-project-client && npm i",
+    "setup-project": "npm i & cd my-project-client && npm i",
     "start": "nodemon server.js"
   },
   "keywords": [],
