@@ -56,9 +56,9 @@ server.use("/api/v1/task",router);
 
 // })
 
-server.get("/", (req, res) => {
-  res.send("Hello word");
-});
+// server.get("/", (req, res) => {
+//   res.send("Hello word");
+// });
 
 server.use('*',(req, res)=>{
   res.status(404).json({msg: 'The route is not define '})
