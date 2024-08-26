@@ -45,8 +45,6 @@ export const addNewTask = async (req, res) => {
 export const deleteTask = async (req, res) => {
   try {
     const { id } = req.params;
-
-    console.log({id})
     const deletedTask = await Task.findByIdAndDelete(id);
     if (!deletedTask) {
       return res.status(404).json({ msg: "task was not found" });
@@ -63,8 +61,6 @@ export const updateTask = async (req, res) => {
     const { id } = req.params;
     const { taskStatus } = req.body;
     
-    console.log(taskStatus)
-    
     if (taskStatus === undefined || taskStatus === null) {
       return res.status(400).json({ msg: "Please enter the task status" });
     }
@@ -75,7 +71,7 @@ export const updateTask = async (req, res) => {
       { new: true } 
     );
 
-    console.log(updatedTask)
+   
 
     if (!updatedTask) {
       return res.status(404).json({ msg: "No task found with the given ID" });
