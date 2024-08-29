@@ -8,15 +8,14 @@ export const Board = () => {
 
   useEffect(() => {
     axios
-      .get("/api/v1/task")
+      .get("/api/v2/task")
       .then((res) => {
-        // console.log(res);
-        const tasks = res.data.tasks;
+        const tasks = res.data;
         setTodos(
           tasks.map((task) => ({
             text: task.task,
-            completed: task.taskStatus,
-            id: task._id,
+            completed: task.task_status,
+            id: task.id,
           }))
         );
         // console.log(tasks);
@@ -30,56 +29,59 @@ export const Board = () => {
 
   const removeTodo = async (todoId) => {
     try {
-      await axios.delete(`/api/v1/task/${todoId}`);
-  
+      await axios.delete(`/api/v2/task/${todoId}`);
 
       const newTodos = todos.filter((todo) => todo.id !== todoId);
-      
+
       setTodos(newTodos);
     } catch (error) {
       console.error("Error deleting task:", error);
     }
   };
-  
 
   const toggleTodo = async (index) => {
     try {
-      const taskToUpdate = todos.find(todo => todo.id === index);
-      const currentStatus = taskToUpdate.completed === 'complete' ? 'pending' : 'complete';
-      const {data: {task}} = await axios.patch(`/api/v1/task/${taskToUpdate.id}`, { taskStatus: currentStatus });
+      const taskToUpdate = todos.find((todo) => todo.id === index);
+      const currentStatus =
+        taskToUpdate.completed === "complete" ? "pending" : "complete";
+
+      const response = await axios.patch(`/api/v2/task/${taskToUpdate.id}`, {
+        taskStatus: currentStatus,
+      });
+
+      const updatedTask = response.data.task;
 
       setTodos((prevTodos) =>
         prevTodos.map((todo) =>
-          todo.id === task._id ? {
-            text: task.task,
-            completed: task.taskStatus,
-            id: task._id,
-          }: todo
+          todo.id === updatedTask.id
+            ? {
+                text: updatedTask.task,
+                completed: updatedTask.task_status,
+                id: updatedTask.id,
+              }
+            : todo
         )
       );
-  
     } catch (error) {
       console.error("Failed to toggle todo:", error);
     }
   };
-  
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (input.trim()) {
       try {
-        const response = await axios.post("/api/v1/task", {
+        const response = await axios.post("/api/v2/task", {
           task: input,
-          taskStatus: 'pending',
+          taskStatus: "pending",
         });
-
+        console.log(response);
         const newTask = {
+          id: response.data.id,
           text: response.data.task,
-          taskStatus: response.data.taskStatus,
-          id: response.data._id,
+          task_status: response.data.task_status,
         };
-
+        console.log(newTask);
         addTodo(newTask);
         setInput("");
       } catch (error) {
@@ -118,7 +120,7 @@ export const Board = () => {
             {todos.map((todo, index) => (
               <Todolist
                 key={todo.id}
-                index={index}
+               
                 todo={todo}
                 toggleTodo={toggleTodo}
                 removeTodo={removeTodo}

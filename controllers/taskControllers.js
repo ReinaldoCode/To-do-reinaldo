@@ -83,49 +83,77 @@
 // };
 
 import { pool } from "../db.js";
+import { nanoid } from "nanoid";
 
-export const getAllTask = (req, res) => {
-  pool.query("SELECT * FROM task", (error, results) => {
-    if (error) {
-      console.error("Database query error:", error);
-      return res.status(500).json({ error: "Internal Server Error" });
+export const getAllTask = async (req, res) => {
+  try {
+    pool.query("SELECT * FROM task", (error, results) => {
+      if (error) {
+        console.error("Database query error:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+      res.status(200).json(results.rows);
+    });
+  } catch (error) {
+    res.status(500).json({ msg: "Error with the server " });
+  }
+};
+
+export const addNewTask = async (req, res) => {
+  try {
+    const { task, taskStatus } = req.body;
+
+    if (!task) {
+      return res.status(400).json({ msg: "Please enter the task" });
     }
-    res.status(200).json(results.rows);
-  });
+
+    const nano = nanoid();
+    const query = `INSERT INTO task(id, task, task_status) VALUES($1, $2, $3) RETURNING *`;
+    const values = [nano, task, taskStatus];
+
+    pool.query(query, values, (error, results) => {
+      if (error) {
+        console.error('Database error:', error);
+        return res.status(500).json({ msg: "Database error occurred" });
+      }
+
+      res.status(201).json(results.rows[0]);
+    });
+  } catch (error) {
+    console.error('Server error:', error);
+    res.status(500).json({ msg: "Server error occurred" });
+  }
 };
 
-export const addNewTask = (req, res) => {
-  const { id, task, taskStatus } = req.body;
-
-  const query = `INSERT INTO task(id, task,task_status) VALUES($1,$2,$3)`;
-  const values = [id, task, taskStatus];
-
-  pool.query(query, values, (error, results) => {
-    if (error) return error;
-    res.status(200).json({ msg: "task has been added" });
-  });
+export const deletedTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const query = `DELETE FROM task WHERE id=($1)`;
+    const values = [id];
+    pool.query(query, values, (error, results) => {
+      if (error) return error;
+      
+      res.status(200).json({ msg: "Task has been deleted" });
+    });
+  } catch (error) {
+    res.status(500).json({ msg: "Error with the server " });
+  }
 };
 
-export const deletedTask = (req, res) => {
-  const { id } = req.params;
-  const query = `DELETE FROM task WHERE id=($1)`;
-  const values = [id];
-  pool.query(query, values, (error, results) => {
-    if (error) return error;
-    res.status(200).json({ msg: "Task has been deleted" });
-  });
+export const updatedTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { taskStatus } = req.body;
+
+    const query = `UPDATE task SET task_status=($1) WHERE id=($2) RETURNING *`;
+    const values = [taskStatus, id];
+
+
+    pool.query(query, values, (error, results) => {
+      if (error) return error;
+      res.status(200).json(results.rows[0]);
+    });
+  } catch (error) {
+    res.status(500).json({ msg: "Error with the server " });
+  }
 };
-
-export const updatedTask =(req, res) => {
-const {id} = req.params;
-const {task, taskStatus} = req.body;
-
-const query = `UPDATE task SET task=($1), task_status=($2) WHERE id=($3)`;
-const values = [task,taskStatus,id];
-console.log(values);
-
-pool.query(query,values,(error, results) =>{
-if(error) return error;
-res.status(200).json({msg: 'task updated'});
-})
-}
