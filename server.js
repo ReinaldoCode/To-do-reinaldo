@@ -1,15 +1,20 @@
 import express from "express";
 import router from "./routers/taskRouters.js";
 import * as dotenv from 'dotenv';
-import mongoose from "mongoose";
+// import bodyParser from "body-parser";
+// import mongoose from "mongoose";
+
+
+
 
 dotenv.config();
 
 const server = express();
 const port = process.env.PORT;
 
+// server.use(bodyParser.json());
 server.use(express.json());
-server.use("/api/v1/task",router);
+// server.use("/api/v1/task",router);
 
 //create task , update task , delete task
 
@@ -60,16 +65,18 @@ server.use("/api/v1/task",router);
 //   res.send("Hello word");
 // });
 
+// server.post("/api/v2/task");
+
+
+server.use("/api/v2/task",router);
+
 server.use('*',(req, res)=>{
   res.status(404).json({msg: 'The route is not define '})
-})
-try{
-await mongoose.connect(process.env.MONGO_URL);
+});
+
+
 server.listen(port, (req, res) => {
   console.log(`Server runing on port ${port}`);
 });
-}catch(error){
-console.log(error);
-process.exit(1);
-}
+
 
