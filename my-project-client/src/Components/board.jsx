@@ -16,6 +16,7 @@ export const Board = () => {
             text: task.task,
             completed: task.task_status,
             id: task.id,
+            
           }))
         );
         // console.log(tasks);
@@ -49,8 +50,8 @@ export const Board = () => {
         taskStatus: currentStatus,
       });
 
-      const updatedTask = response.data.task;
-
+      const updatedTask = response.data;
+    
       setTodos((prevTodos) =>
         prevTodos.map((todo) =>
           todo.id === updatedTask.id
@@ -58,6 +59,7 @@ export const Board = () => {
                 text: updatedTask.task,
                 completed: updatedTask.task_status,
                 id: updatedTask.id,
+                date: updatedTask.date,
               }
             : todo
         )
@@ -80,6 +82,7 @@ export const Board = () => {
           id: response.data.id,
           text: response.data.task,
           task_status: response.data.task_status,
+          date: response.data.date,
         };
         console.log(newTask);
         addTodo(newTask);
