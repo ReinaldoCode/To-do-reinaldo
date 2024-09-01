@@ -3,10 +3,6 @@ import router from "./routers/taskRouters.js";
 import * as dotenv from 'dotenv';
 // import bodyParser from "body-parser";
 // import mongoose from "mongoose";
-
-
-
-
 dotenv.config();
 
 const server = express();

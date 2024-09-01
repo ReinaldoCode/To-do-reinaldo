@@ -1,12 +1,32 @@
-import { NavBar } from "./Components/navbar";
-import { Board } from "./Components/board";
+
+import { HomeLayout, LandingPage, Register, Login, ToDo } from "./pages";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomeLayout />,
+    children: [
+      {
+       index: true,
+       element: <LandingPage />,
+      },
+      {
+        path: 'login',
+        element: <Login/>
+      },
+      {
+        path: 'register',
+        element: <Register/>,
+      },
+      {
+        path: 'to-do',
+        element: <ToDo/>,
+      },
+ ] }
+])
 
 const App = () => {
-  return (
-    <div>
-      <NavBar />
-      <Board/>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 };
 export default App;

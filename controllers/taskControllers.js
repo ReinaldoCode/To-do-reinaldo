@@ -114,7 +114,6 @@ export const addNewTask = async (req, res) => {
     const date = new Date();
     const dateString = date.toISOString();
     const values = [nano, task, taskStatus, dateString];
-    console.log(values);
     pool.query(addNewQuery, values, (error, results) => {
       if (error) {
        return res.status(500).json({ msg: "Database error occurred" });
