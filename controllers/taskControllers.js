@@ -131,7 +131,7 @@ export const deletedTask = async (req, res) => {
     const values = [id];
     pool.query(deleteQuery, values, (error) => {
       if (error) return error;
-      res.status(200).json({ msg: "Task has been deleted" });
+      res.status(200).json({ msg: "task has been deleted" });
     });
   } catch (error) {
     res.status(500).json({ msg: "Error with the server " });

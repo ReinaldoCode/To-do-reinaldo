@@ -1,5 +1,6 @@
 import express from "express";
 import router from "./routers/taskRouters.js";
+import userRouter from "./routers/userRoutes.js";
 import * as dotenv from 'dotenv';
 // import bodyParser from "body-parser";
 // import mongoose from "mongoose";
@@ -65,6 +66,7 @@ server.use(express.json());
 
 
 server.use("/api/v2/task",router);
+server.use("/api/v2/user",userRouter);
 
 server.use('*',(req, res)=>{
   res.status(404).json({msg: 'The route is not define '})
