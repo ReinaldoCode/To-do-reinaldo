@@ -3,7 +3,8 @@ import { Router } from "express";
 
 const userRouter = Router();
 
-userRouter.route("/").post(createUser).get(login);
+userRouter.route("/register").post(createUser);
+userRouter.route("/login").post(login);
 userRouter.route("/:id").delete(deleteUser);
 
 

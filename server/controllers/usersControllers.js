@@ -11,7 +11,7 @@ import { createJWT } from "../utils/takenUtils.js";
 
 export const createUser = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { name, email} = req.body;
     const hashedPassword = await hashingPassword(req.body.password);
     const password = hashedPassword;
     console.log(password);
@@ -45,25 +45,21 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ msg: "Database error" });
   }
 };
-export const login = async (req, res) => {
+export const login = async (req, res) => { 
   try {
     const { email, password } = req.body;
     const values = [email];
 
     pool.query(findUserQuery, values, async (error, results) => {
       if (error) {
-        console.error("Database query error: ", error);
         return res.status(500).json({ msg: "Database query error occurred" });
       }
       if (results.rows.length === 0) {
         return res.status(404).json({ msg: "User not found" });
       }
-
       const user = results.rows[0];
       const hashedPassword = user.password;
-
       const isMatch = await bcrypt.compare(password, hashedPassword);
-
       if (!isMatch) {
         return res.status(400).json({ msg: "Incorrect password" });
       }
