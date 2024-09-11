@@ -20,8 +20,8 @@ export const createUser = async (req, res) => {
         msg: "Please complete all the information (name,email,password)",
       });
     }
-    const userID = nanoid();
-    const values = [userID, name, email, password];
+    const userid = nanoid();
+    const values = [userid, name, email, password];
     pool.query(createNewUser, values, (error, results) => {
       if (error) {
         console.log(error);
@@ -52,6 +52,7 @@ export const login = async (req, res) => {
 
     pool.query(findUserQuery, values, async (error, results) => {
       if (error) {
+        console.log(error)
         return res.status(500).json({ msg: "Database query error occurred" });
       }
       if (results.rows.length === 0) {
@@ -63,7 +64,7 @@ export const login = async (req, res) => {
       if (!isMatch) {
         return res.status(400).json({ msg: "Incorrect password" });
       }
-      const token = createJWT({userID:user.userid})
+      const token = createJWT({userid:user.userid})
       res.status(200).json({token});
     });
   } catch (error) {

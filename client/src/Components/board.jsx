@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Todolist } from "./todo-list";
+import {jwtDecode} from "jwt-decode"
 import axios from "axios";
+
 
 export const Board = () => {
   const [input, setInput] = useState("");
@@ -11,15 +13,18 @@ export const Board = () => {
       .get("/api/v2/task")
       .then((res) => {
         const tasks = res.data;
-        setTodos(
-          tasks.map((task) => ({
-            text: task.task,
-            completed: task.task_status,
-            id: task.id,
-            
-          }))
-        );
-        // console.log(tasks);
+        const useridToken = localStorage.getItem("jwtToken");
+        const userid =jwtDecode(useridToken).userid;
+        const filteredTasks = tasks
+        .filter((task) => task.userid === userid) // Only tasks that match the current user's ID
+        .map((task) => ({
+          text: task.task,
+          completed: task.task_status,
+          id: task.id,
+          userid: task.userid,
+        }));
+
+      setTodos(filteredTasks);
       })
       .catch((err) => console.error("Error with the task: ", err));
   }, []);
@@ -73,9 +78,13 @@ export const Board = () => {
     e.preventDefault();
     if (input.trim()) {
       try {
+        const useridToken = localStorage.getItem("jwtToken");
+        const userid =jwtDecode(useridToken).userid;
+        console.log(userid);
         const response = await axios.post("/api/v2/task", {
           task: input,
           taskStatus: "pending",
+          userid: userid,
         });
         console.log(response);
         const newTask = {
@@ -83,8 +92,9 @@ export const Board = () => {
           text: response.data.task,
           task_status: response.data.task_status,
           date: response.data.date,
+          userid: response.data.userid,
         };
-        console.log(newTask);
+        // console.log(newTask);
         addTodo(newTask);
         setInput("");
       } catch (error) {

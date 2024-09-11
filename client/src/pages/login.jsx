@@ -7,7 +7,8 @@ import axios from "axios";
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  
+  console.log(formData);
+  console.log(data);
   try {
     const response = await axios.post('/api/v2/user/login',data)
     const token = response.data.token;
