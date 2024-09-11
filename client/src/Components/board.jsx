@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Todolist } from "./todo-list";
-import {jwtDecode} from "jwt-decode"
 import axios from "axios";
-
+import { decodedToken } from "../utils/jwtDecode";
 
 export const Board = () => {
   const [input, setInput] = useState("");
@@ -13,18 +12,17 @@ export const Board = () => {
       .get("/api/v2/task")
       .then((res) => {
         const tasks = res.data;
-        const useridToken = localStorage.getItem("jwtToken");
-        const userid =jwtDecode(useridToken).userid;
+        const userid = decodedToken();
         const filteredTasks = tasks
-        .filter((task) => task.userid === userid) // Only tasks that match the current user's ID
-        .map((task) => ({
-          text: task.task,
-          completed: task.task_status,
-          id: task.id,
-          userid: task.userid,
-        }));
+          .filter((task) => task.userid === userid)
+          .map((task) => ({
+            text: task.task,
+            completed: task.task_status,
+            id: task.id,
+            userid: task.userid,
+          }));
 
-      setTodos(filteredTasks);
+        setTodos(filteredTasks);
       })
       .catch((err) => console.error("Error with the task: ", err));
   }, []);
@@ -56,7 +54,7 @@ export const Board = () => {
       });
 
       const updatedTask = response.data;
-    
+
       setTodos((prevTodos) =>
         prevTodos.map((todo) =>
           todo.id === updatedTask.id
@@ -78,9 +76,7 @@ export const Board = () => {
     e.preventDefault();
     if (input.trim()) {
       try {
-        const useridToken = localStorage.getItem("jwtToken");
-        const userid =jwtDecode(useridToken).userid;
-        console.log(userid);
+        const userid = decodedToken();
         const response = await axios.post("/api/v2/task", {
           task: input,
           taskStatus: "pending",
@@ -133,7 +129,6 @@ export const Board = () => {
             {todos.map((todo, index) => (
               <Todolist
                 key={todo.id}
-               
                 todo={todo}
                 toggleTodo={toggleTodo}
                 removeTodo={removeTodo}
