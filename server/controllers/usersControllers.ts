@@ -1,17 +1,23 @@
-import { pool } from "../DB/db.js";
+import { pool } from "../DB/db.ts";
 import {
   createNewUser,
   deleteUserQuery,
   findUserQuery,
 } from "../DB/db-query.js";
 import { nanoid } from "nanoid";
-import { hashingPassword } from "../utils/hasing-password.js";
+import { hashingPassword } from "../utils/hasing-password.ts";
 import bcrypt from "bcryptjs";
-import { createJWT } from "../utils/takenUtils.js";
+import { createJWT } from "../utils/takenUtils.ts";
+import { Response, Request } from "express";
 
-export const createUser = async (req, res) => {
+interface UserRequestBody {
+  name: string;
+  email: string;
+}
+
+export const createUser = async (req : Request, res: Response) => {
   try {
-    const { name, email} = req.body;
+    const { name, email}:UserRequestBody = req.body;
     const hashedPassword = await hashingPassword(req.body.password);
     const password = hashedPassword;
     console.log(password);
@@ -33,7 +39,7 @@ export const createUser = async (req, res) => {
     res.status(500).json({ msg: "Server error occuerred" });
   }
 };
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const values = [id];
@@ -45,7 +51,7 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ msg: "Database error" });
   }
 };
-export const login = async (req, res) => { 
+export const login = async (req: Request, res: Response) => { 
   try {
     const { email, password } = req.body;
     const values = [email];
