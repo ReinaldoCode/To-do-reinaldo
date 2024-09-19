@@ -1,13 +1,15 @@
-import React from "react";
+
 import { Link, Form, redirect, useNavigation } from "react-router-dom";
 import { FormRow } from "../Components/form-row";
 import axios from "axios";
 
+
+
 export const action =  async ({request}) => {
+  console.log(request);
   const fromData = await request.formData();
   const data = Object.fromEntries(fromData)
-  console.log(fromData);
-  console.log(data)
+ 
   try{
   const response = await axios.post('api/v2/user/register',data)
   console.log(response);

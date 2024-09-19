@@ -4,7 +4,7 @@ import axios from "axios";
 import { decodedToken } from "../utils/jwtDecode";
 
 export const Board = () => {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState<string>("");
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {

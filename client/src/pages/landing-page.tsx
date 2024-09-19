@@ -1,6 +1,6 @@
 import landingPagePicture from "../assets/images/landin-page-picture.svg";
 export const LandingPage = () => {
-  return (
+  return (   
     <div className="flex  h-screen justify-center ">
       <div className="w-96 rounded-md h-96 text-center pt-8 mt-10  bg-gray-700 p-5">
         <h1 className=" mt-8 font-bold text-2xl text-blue-400">
