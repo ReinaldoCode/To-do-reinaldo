@@ -1,11 +1,10 @@
-import { pool } from "../DB/db.ts";
+import { pool } from "../../DB/db";
 import {
   selecAllQuery,
   addNewQuery,
   deleteQuery,
   updateQuery,
-} from "../DB/db-query.ts";
-import { nanoid } from "nanoid";
+} from "../../DB/db-query";
 import { Response, Request } from "express";
 
 export const getAllTask = async (req: Request, res: Response) => {
@@ -29,7 +28,7 @@ export const addNewTask = async (req:Request, res: Response) => {
         msg: "Please provide all required fields: task, taskStatus, userid",
       });
     }
-    const taskId = nanoid();
+    const taskId = 'asdsasa';
     const date = new Date().toISOString();
     const values = [taskId, task, taskStatus, date, userid];
     pool.query(addNewQuery, values, (error, results) => {

@@ -1,6 +1,6 @@
 import express from "express";
-import router from "./routers/taskRouters.ts";
-import userRouter from "./routers/userRoutes.ts";
+import router from "./routers/taskRouters";
+import userRouter from "./routers/userRoutes";
 import * as dotenv from "dotenv";
 
 dotenv.config();

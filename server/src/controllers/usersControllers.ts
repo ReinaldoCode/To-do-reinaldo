@@ -1,13 +1,12 @@
-import { pool } from "../DB/db.ts";
+import { pool } from "../../DB/db.js";
 import {
   createNewUser,
   deleteUserQuery,
   findUserQuery,
-} from "../DB/db-query.js";
-import { nanoid } from "nanoid";
-import { hashingPassword } from "../utils/hasing-password.ts";
+} from "../../DB/db-query.js";
+import { hashingPassword } from "../utils/hasing-password.js";
 import bcrypt from "bcryptjs";
-import { createJWT } from "../utils/takenUtils.ts";
+import { createJWT } from "../utils/takenUtils.js";
 import { Response, Request } from "express";
 
 interface UserRequestBody {
@@ -26,7 +25,7 @@ export const createUser = async (req : Request, res: Response) => {
         msg: "Please complete all the information (name,email,password)",
       });
     }
-    const userid = nanoid();
+    const userid = 'abc123';
     const values = [userid, name, email, password];
     pool.query(createNewUser, values, (error, results) => {
       if (error) {
@@ -70,7 +69,8 @@ export const login = async (req: Request, res: Response) => {
       if (!isMatch) {
         return res.status(400).json({ msg: "Incorrect password" });
       }
-      const token = createJWT({userid:user.userid})
+      const userid: string= 'abc123';
+      const token:string = createJWT(userid)
       res.status(200).json({token});
     });
   } catch (error) {

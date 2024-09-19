@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.ts",
-  "type": "module",
   "scripts": {
     "setup-project": "npm i & cd '/Users/reinaldoperez/Documents/To-do reinaldo/client && npm i",
-    "server": "nodemon --exec ts-node ./server.ts",
+    "server": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
     "client": "cd '/Users/reinaldoperez/Documents/To-do reinaldo/client' && npm run dev",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \" npm run client\""
   },
@@ -31,6 +30,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/pg": "^8.11.10",
     "nodemon": "^3.1.5",
     "ts-node": "^10.9.2",
